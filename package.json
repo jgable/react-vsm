@@ -1,0 +1,32 @@
+{
+  "name": "react-vsm",
+  "version": "0.0.1",
+  "description": "A VisualStateManager (WPF/XAML inspired) implementation in React",
+  "main": "dist/react-vsm.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "webpack-dev-server --devtool eval --progress --colors --hot --content-base dist"
+  },
+  "author": "Jacob Gable",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-core": "^5.1.11",
+    "babel-loader": "^5.0.0",
+    "css-loader": "^0.11.0",
+    "style-loader": "^0.11.0",
+    "webpack": "^1.8.9",
+    "extract-text-webpack-plugin": "^0.6.0",
+    "file-loader": "^0.8.1",
+    "html-webpack-plugin": "^1.3.0",
+    "less": "^2.5.0",
+    "less-loader": "^2.2.0",
+    "url-loader": "^0.5.5"
+  },
+  "dependencies": {
+    "lodash": "^3.7.0",
+    "react": "^0.13.2",
+    "react-bootstrap": "^0.21.0",
+    "react-router": "^0.13.2",
+    "velocity-animate": "^1.2.2"
+  }
+}

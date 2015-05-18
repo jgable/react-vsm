@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>React - Visual State Manager</title>
+    <meta name="description" content="React VSM">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% for (var css in o.htmlWebpackPlugin.files.css) { %}<link href="{%=o.htmlWebpackPlugin.files.css[css] %}" rel="stylesheet">
+    {% } %}
+  </head>
+  <body>
+    <div id="container-root" class="router-content root"></div>
+
+    {% for (var chunk in o.htmlWebpackPlugin.files.chunks) { %}<script src="{%=o.htmlWebpackPlugin.files.chunks[chunk].entry %}"></script>
+    {% } %}
+  </body>
+</html>
