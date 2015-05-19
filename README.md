@@ -51,6 +51,6 @@ React.render(<ExampleApp />, document.getElementById('container-root'));
 
 ### To Run It
 
-- Install webpack; `npm install webpack -g`
+- Install webpack and webpack-dev-server; `npm install webpack webpack-dev-server -g`
 - Install dependencies; `npm install`
 - Run dev script; `npm run dev`
