@@ -5,12 +5,8 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var node_modules_dir = path.resolve(__dirname, 'node_modules');
 
 var config = {
-  resolve: {
-    root: [path.resolve(__dirname, 'js')]
-  },
   entry: {
-    app: path.resolve(__dirname, 'js/app.js'),
-    styles: path.resolve(__dirname, 'js/app.less'),
+    app: [path.resolve(__dirname, 'js/app.js'), path.resolve(__dirname, 'js/app.less')],
 
     // Since react is installed as a node module, node_modules/react,
     // we can point to it directly, just like require('react');

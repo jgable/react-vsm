@@ -38,4 +38,4 @@ class ExampleApp extends VisualStateComponent {
 
 React.render(<ExampleApp />, document.getElementById('container-root'));
 
-module.exports = {};
+module.exports = ExampleApp;
