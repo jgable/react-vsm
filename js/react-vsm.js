@@ -56,7 +56,7 @@ class VisualStateComponent extends Component {
     return EmptyVisualGroup;
   }
 
-  goToState(stateName) {
+  goToVisualState(stateName) {
     this.setState({
       visualState: stateName
     });
@@ -207,8 +207,6 @@ class VisualState extends Component {
     if (!this.props.children) {
       return;
     }
-
-    console.log('VisualState.transitionTo', this.animRefs);
 
     return Promise.resolve(this.animRefs.map(function (child) {
       return child.animate();

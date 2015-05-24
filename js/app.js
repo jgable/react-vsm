@@ -32,7 +32,11 @@ class ExampleApp extends VisualStateComponent {
   }
 
   handleBoxClick() {
-    this.goToState('one');
+    if (this.state.visualState !== 'one') {
+      return this.goToVisualState('one');  
+    }
+
+    this.goToVisualState('two');
   }
 }
 
