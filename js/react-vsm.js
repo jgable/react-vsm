@@ -2,6 +2,8 @@ var React = require('react');
 var { Component } = React;
 var { cloneWithProps } = React.addons;
 
+var Velocity = window.Velocity;
+
 class VisualStateComponent extends Component {
   constructor() {
     super();
@@ -17,7 +19,7 @@ class VisualStateComponent extends Component {
 
     // Set the visual state group
     var visualStates = (
-      <VisualStates componentDOMNode={React.findDOMNode(this)} component={this}>
+      <VisualStates componentDOMNode={React.findDOMNode(this)}>
         {this.getVisualStates()}
       </VisualStates>
     );
@@ -90,7 +92,7 @@ class VisualStates extends Component {
 }
 
 VisualStates.propTypes = {
-  componentDOMNode: React.PropTypes.any
+  componentDOMNode: React.PropTypes.element.isRequired
 };
 
 VisualStates.childContextTypes = {
@@ -134,8 +136,6 @@ class VisualStateGroup extends Component {
     var nextState = this.stateRefs[state];
     var fromTransition = Promise.resolve();
     var nextTransition = Promise.resolve();
-
-    console.log('VisualStateGroup.transitionToState from -> to', this.currState, nextState);
 
     if (this.next) {
       this.next.state.abortTransition(this.next.transition);
@@ -234,33 +234,54 @@ class VisualStateAnimation extends Component {
   animate() {
     return Promise.resolve();
   }
-}
 
-class ColorAnimation extends VisualStateAnimation {
-  animate() {
-    return new Promise(function (resolve) {
-      var target = this.getTarget();
-      Velocity(target, { backgroundColor: this.props.to }, {
-        duration: 1000,
-        complete: function () {
-          resolve();
-        }
-      });
-    }.bind(this));
-  }
-
-  getTarget() {
+  getDOMTarget() {
     if (this.props.target) {
-      return React.findDOMNode(this.props.component).querySelectorAll(this.props.target);
+      return this.props.componentDOMNode.querySelectorAll(this.props.target);
     }
 
     return this.props.componentDOMNode;
   }
 }
 
+VisualStateAnimation.defaultProps = {
+  from: null,
+  to: null,
+  duration: 1000,
+  easing: null,
+  delay: null,
+  loop: null,
+  onComplete: null
+};
+
+class ColorAnimation extends VisualStateAnimation {
+  animate() {
+    return new Promise(function (resolve) {
+      var target = this.getDOMTarget();
+      Velocity(target, { backgroundColor: this.props.to }, {
+        delay: this.props.delay,
+        duration: this.props.duration,
+        easing: this.props.easing,
+        begin: function () {
+          if (this.props.onBegin) {
+            this.props.onBegin();
+          }
+        },
+        complete: function () {
+          if (this.props.onComplete) {
+            this.props.onComplete();
+          }
+          resolve();
+        }.bind(this)
+      });
+    }.bind(this));
+  }
+}
+
 var EmptyVisualGroup = <VisualStateGroup />;
 
 module.exports = {
+  Velocity,
   VisualStateComponent,
   VisualStateGroup,
   VisualState,
