@@ -6,7 +6,7 @@ var node_modules_dir = path.resolve(__dirname, 'node_modules');
 
 var config = {
   entry: {
-    app: [path.resolve(__dirname, 'js/app.js'), path.resolve(__dirname, 'js/app.less')],
+    app: [path.resolve(__dirname, 'demo/js/app.js'), path.resolve(__dirname, 'demo/js/app.less')],
 
     // Since react is installed as a node module, node_modules/react,
     // we can point to it directly, just like require('react');
@@ -40,7 +40,7 @@ var config = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: 'index.html'
+      template: 'demo/index.html'
     }),
     new webpack.optimize.CommonsChunkPlugin('vendors', 'vendors.[hash].js'),
     new ExtractTextPlugin("[name].[hash].css")

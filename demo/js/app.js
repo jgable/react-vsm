@@ -4,8 +4,8 @@ var {
   VisualStateComponent,
   VisualStateGroup,
   VisualState,
-  ColorAnimation
-} = require('./react-vsm');
+  BackgroundColorAnimation
+} = require('../../index');
 
 class ExampleApp extends VisualStateComponent {
   render() {
@@ -22,10 +22,10 @@ class ExampleApp extends VisualStateComponent {
     return (
       <VisualStateGroup key="default">
         <VisualState name="one" key="one">
-          <ColorAnimation target=".box" to='#AA3838' />
+          <BackgroundColorAnimation target=".box" to='#AA3838' />
         </VisualState>
         <VisualState name="two" key="two">
-          <ColorAnimation target=".box" to='#2E4272' />
+          <BackgroundColorAnimation target=".box" to='#2E4272' />
         </VisualState>
       </VisualStateGroup>
     );
