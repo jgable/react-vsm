@@ -50,12 +50,13 @@ var ExampleApp = React.createClass({
   },
 
   _changeSignal: function(ev) {
-    var currMode = this.state.mode || 'stop';
-    var mode = 'stop';
-    if (currMode === 'stop') {
+    var mode = this.state.mode;
+    if (mode === 'stop') {
       mode = 'go';
-    } else if (currMode === 'go') {
+    } else if (mode === 'go') {
       mode = 'caution';
+    } else {
+      mode = 'stop';
     }
 
     this.setState({mode});

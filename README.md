@@ -3,54 +3,83 @@ React Visual State Manager
 
 This is an exploration of what a Visual State Manager implementation might look like for React.
 
-Read more about the WPF/XAML [Visual State Manager](https://msdn.microsoft.com/en-us/library/system.windows.visualstatemanager(v=vs.110).aspx#Examples) from MSDN docs.
+The original inspiration is from the WPF/XAML [Visual State Manager](https://msdn.microsoft.com/en-us/library/system.windows.visualstatemanager(v=vs.110).aspx#Examples).
 
-### This is the goal
+### An example stoplight
+
+![react-vsm-stoplight](https://cloud.githubusercontent.com/assets/164497/12082028/3804d906-b240-11e5-9a0d-11f4d80491ed.gif)
 
 ```js
 var React = require('react');
-var { Component } = React;
+var ReactDOM = require('react-dom');
 var {
-  VisualStateComponent,
   VisualStateGroup,
   VisualState,
-  ColorAnimation
-} = require('./react-vsm');
+  OpacityAnimation
+} = require('../../index');
 
-class ExampleApp extends VisualStateComponent {
-  render() {
+var TrafficSignal = React.createClass({
+  displayName: 'TrafficSignal',
+
+  render: function () {
     return (
-      <div>
-        <h1>App</h1>
-        <div key="box" className="box">Box</div>
-        <button onClick={this.handleBoxClick.bind(this)}>Make it happen</button>
+      <div className="traffic-signal">
+        <div className="light light-stop" ref="red" />
+        <div className="light light-caution" ref="yellow" />
+        <div className="light light-go" ref="green" />
+        <VisualStateGroup component={this} activeState={this.props.mode}>
+          <VisualState name="stop">
+            <OpacityAnimation targetRef="red" to={1.0} />
+          </VisualState>
+          <VisualState name="caution">
+            <OpacityAnimation targetRef="yellow" to={1.0} />
+          </VisualState>
+          <VisualState name="go">
+            <OpacityAnimation targetRef="green" to={1.0} />
+          </VisualState>
+        </VisualStateGroup>
       </div>
     );
   }
+});
 
-  getVisualStates() {
+var ExampleApp = React.createClass({
+  displayName: 'ExampleApp',
+
+  getInitialState: function() {
+    return {
+      mode: 'stop'
+    };
+  },
+
+  render: function () {
     return (
-      <VisualStateGroup name="default">
-        <VisualState name="one">
-          <ColorAnimation target=".box" to='#AA3838' />
-        </VisualState>
-        <VisualState name="two">
-          <ColorAnimation target=".box" to='#2E4272' />
-        </VisualState>
-      </VisualStateGroup>
+      <div>
+        <TrafficSignal mode={this.state.mode} />
+        <button className="traffic-toggle" onClick={this._changeSignal}>Change</button>
+      </div>
     );
-  }
+  },
 
-  handleBoxClick() {
-    this.goToState('one');
-  }
-}
+  _changeSignal: function(ev) {
+    var mode = this.state.mode;
+    if (mode === 'stop') {
+      mode = 'go';
+    } else if (mode === 'go') {
+      mode = 'caution';
+    } else {
+      mode = 'stop';
+    }
 
-React.render(<ExampleApp />, document.getElementById('container-root'));
+    this.setState({mode});
+  }
+});
+
+ReactDOM.render(<ExampleApp />, document.getElementById('container-root'));
 ```
 
 ### To Run It
 
-- Install webpack and webpack-dev-server; `npm install webpack webpack-dev-server -g`
 - Install dependencies; `npm install`
 - Run dev script; `npm run dev`
+- Open the demo page; `open http://localhost:8080/index.html`
