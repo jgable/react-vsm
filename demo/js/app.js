@@ -1,45 +1,68 @@
 var React = require('react');
-var { Component } = React;
+var ReactDOM = require('react-dom');
 var {
-  VisualStateComponent,
   VisualStateGroup,
   VisualState,
-  BackgroundColorAnimation
+  OpacityAnimation
 } = require('../../index');
 
-class ExampleApp extends VisualStateComponent {
-  render() {
+var TrafficSignal = React.createClass({
+  displayName: 'TrafficSignal',
+
+  render: function () {
     return (
-      <div>
-        <h1>App</h1>
-        <div key="box" className="box">Box</div>
-        <button onClick={this.handleBoxClick.bind(this)}>Make it happen</button>
+      <div className="traffic-signal">
+        <div className="light light-stop" ref="red" />
+        <div className="light light-caution" ref="yellow" />
+        <div className="light light-go" ref="green" />
+        <VisualStateGroup component={this} activeState={this.props.mode}>
+          <VisualState name="stop">
+            <OpacityAnimation targetRef="red" to={1.0} />
+          </VisualState>
+          <VisualState name="caution">
+            <OpacityAnimation targetRef="yellow" to={1.0} />
+          </VisualState>
+          <VisualState name="go">
+            <OpacityAnimation targetRef="green" to={1.0} />
+          </VisualState>
+        </VisualStateGroup>
       </div>
     );
   }
+});
 
-  getVisualStates() {
+var ExampleApp = React.createClass({
+  displayName: 'ExampleApp',
+
+  getInitialState: function() {
+    return {
+      mode: 'stop'
+    };
+  },
+
+  render: function () {
     return (
-      <VisualStateGroup key="default">
-        <VisualState name="one" key="one">
-          <BackgroundColorAnimation target=".box" to='#AA3838' />
-        </VisualState>
-        <VisualState name="two" key="two">
-          <BackgroundColorAnimation target=".box" to='#2E4272' />
-        </VisualState>
-      </VisualStateGroup>
+      <div>
+        <TrafficSignal mode={this.state.mode} />
+        <button className="traffic-toggle" onClick={this._changeSignal}>Change</button>
+      </div>
     );
-  }
+  },
 
-  handleBoxClick() {
-    if (this.state.visualState !== 'one') {
-      return this.goToVisualState('one');  
+  _changeSignal: function(ev) {
+    var currMode = this.state.mode || 'stop';
+    var mode = 'stop';
+    if (currMode === 'stop') {
+      mode = 'go';
+    } else if (currMode === 'go') {
+      mode = 'caution';
     }
 
-    this.goToVisualState('two');
+    this.setState({mode});
   }
-}
+});
 
-React.render(<ExampleApp />, document.getElementById('container-root'));
+
+ReactDOM.render(<ExampleApp />, document.getElementById('container-root'));
 
 module.exports = ExampleApp;

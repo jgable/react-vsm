@@ -1,0 +1,37 @@
+#container-root {
+  width: 150px;
+  margin: 0 auto;
+}
+
+.traffic-signal {
+  width: 100px;
+  height: auto;
+  background-color: #222;
+  padding: 10px;
+
+  .light {
+    width: 100px;
+    height: 100px;
+    border-radius: 50px;
+    opacity: 0.2;
+    margin: 5px 0;
+
+    &-stop {
+      background-color: red;
+    }
+
+    &-caution {
+      background-color: orange;
+    }
+
+    &-go {
+      background-color: green;
+    }
+  }
+}
+
+.traffic-toggle {
+  width: 120px;
+  height: 30px;
+  margin-top: 10px;
+}

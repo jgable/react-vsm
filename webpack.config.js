@@ -1,16 +1,11 @@
 var path = require('path');
-var webpack = require('webpack');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var node_modules_dir = path.resolve(__dirname, 'node_modules');
 
 var config = {
   entry: {
-    app: [path.resolve(__dirname, 'demo/js/app.js'), path.resolve(__dirname, 'demo/js/app.less')],
-
-    // Since react is installed as a node module, node_modules/react,
-    // we can point to it directly, just like require('react');
-    vendors: ['react/addons', 'react-router', 'react-bootstrap', 'lodash', 'velocity-animate']
+    app: [path.resolve(__dirname, 'demo/js/app.js'), path.resolve(__dirname, 'demo/js/app.scss')],
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -26,15 +21,11 @@ var config = {
       loader: 'url-loader?limit=100000'
     },
     // Extract css files
+    {test: /\.(css|scss})$/, loader: 'style-loader!css-loader'},
+    // SCSS support
     {
-        test: /\.css$/,
-        loader: ExtractTextPlugin.extract("style-loader", "css-loader")
-    },
-    // Optionally extract less files
-    // or any other compile-to-css language
-    {
-        test: /\.less$/,
-        loader: ExtractTextPlugin.extract("style-loader", "css-loader!less-loader")
+      test: /\.scss$/,
+      loaders: ["style", "css", "sass"]
     }
     ],
   },
@@ -42,7 +33,6 @@ var config = {
     new HtmlWebpackPlugin({
       template: 'demo/index.html'
     }),
-    new webpack.optimize.CommonsChunkPlugin('vendors', 'vendors.[hash].js'),
     new ExtractTextPlugin("[name].[hash].css")
   ]
 };
